@@ -1,3 +1,14 @@
+# Before Usage
+
+1. create global variables (e.g. in your .bashrc file)
+```sh
+# --- CREDENTIALS ---
+export ZONE_USERNAME="some_username"
+export ZONE_HOST="xxx.xxx.xxx.xxx"
+```
+
+2. set `mcptt_local_path` variable right inside `zone_worker.sh` script
+
 # Usage
 
 run `help` command to see aviable options
