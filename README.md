@@ -1,13 +1,17 @@
 # Before Usage
 
-1. create global variables (e.g. in your .bashrc file)
+1. Create global variables (e.g. in your .bashrc file)
 ```sh
 # --- CREDENTIALS ---
 export ZONE_USERNAME="some_username"
 export ZONE_HOST="xxx.xxx.xxx.xxx"
 ```
 
-2. set `mcptt_local_path` variable right inside `zone_worker.sh` script
+2. Add your ssh-key to the server\
+   2.1 generate the key with `ssh-keygen`\
+   2.2 copy it like so: `ssh-copy-id -i ~/.ssh/id_rsa.pub $ZONE_USERNAME@$ZONE_HOST`
+
+4. Set `mcptt_local_path` variable right inside `zone_worker.sh` script
 
 # Usage
 
