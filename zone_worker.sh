@@ -60,19 +60,24 @@ make_help() {
   echo "
   Hi! that's a shell script for automation of publishing build to remote server 
     
-  "build"
+  'build'
      = just run \`./scripts/build.sh\` script
 
-  "publish"
+  'publish'
      = take packages/app/mcptt/build/distribution/
      and send it to opt/protei/Protei-MCPTT/WEB-TO-<branch_index> on remote server 
 
-  "new"
+  'new'
      = create nginx config files for new port
     link these files to main nginx config
     does not publish builds to server 
 
-  "help"
+  'delete'
+     = removes nginx config files for old port
+    unlinks these files from main nginx config
+    removes published builds from /WEB-TO-<branch_index>
+
+  'help'
      show help
   "
 }
