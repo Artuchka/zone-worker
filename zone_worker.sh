@@ -123,8 +123,15 @@ make_new_port() {
   read -p "Enter port: " port
   read -p "Enter branch index: " branch_index
 
-  echo_red "Port is ${port}"
-  echo_red "Branch index is ${branch_index}"
+  echo_cyan "Port is ${port}"
+  echo_cyan "Branch index is ${branch_index}"
+
+  port_pid=$(ssh $username@$host "fuser -v -n tcp $port")
+  if [ "$port_pid" != "" ]; then
+    echo_red "Port $port is already taken by other process"
+    echo_red $port_pid
+    exit 1
+  fi
 
   read -p "Continue? [y/n] " should_continue
 
