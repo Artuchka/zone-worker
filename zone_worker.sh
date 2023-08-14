@@ -161,12 +161,54 @@ make_new_port() {
   restart_nginx
 }
 
+delete_published() {
+  read -p "Enter port: " port
+  read -p "Enter branch index: " branch_index
+
+  echo_red "Port is ${port}"
+  echo_red "Branch index is ${branch_index}"
+
+  read -p "Continue? [y/n] " should_continue
+
+  if [ "$should_continue" != y ]; then
+    echo_red "Exiting script"
+    exit 1
+  fi
+
+  rm mcptt_${branch_index}_proxy.conf
+  rm locations_mcptt_${branch_index}.conf
+
+  anchor_to_line="include modules/mcptt/mcptt_${branch_index}_proxy.conf;"
+  replace_with_line=""
+
+  ssh $username@$host\
+    "rm $nginx_remote_mcptt_config_path/mcptt_${branch_index}_proxy.conf"
+
+  ssh $username@$host\
+    "rm $nginx_remote_mcptt_config_path/locations_mcptt_${branch_index}.conf"
+
+  ssh $username@$host\
+    "sed -i 's|$(echo $anchor_to_line)|$(echo -e $replace_with_line)|g' $nginx_remote_config_file_path"
+  echo_green "Nginx config updated by removing configs for port=$port"
+
+  {
+    ssh $username@$host "rm -r $mcptt_remote_build_path/WEB-TO-${branch_index}"
+  } || {
+    echo_red "Could not establish connection"
+    exit 1
+  }
+  echo_green "Build folder removed for branch=$branch_index"
+
+  restart_nginx
+}
+
 for args in "$@"; do
 shift
 	case "$args" in
 		"build") make_build ;;
 		"publish") make_publish ;;
 		"new") make_new_port ;;
+		"delete") delete_published ;;
 		"help") make_help ;;
 	esac
 done
